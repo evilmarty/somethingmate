@@ -1,0 +1,15 @@
+{
+  "name": "cidrmate",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "TZ=Etc/UTC vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  }
+}
