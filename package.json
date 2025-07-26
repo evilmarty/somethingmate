@@ -1,0 +1,32 @@
+{
+  "name": "somethingmate",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A workspace for all Mate apps",
+  "keywords": [
+    "mate",
+    "react",
+    "typescript",
+    "date",
+    "cidr",
+    "web",
+    "javascript"
+  ],
+  "homepage": "https://github.com/evilmarty/somethingmate#readme",
+  "bugs": {
+    "url": "https://github.com/evilmarty/somethingmate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evilmarty/somethingmate.git"
+  },
+  "license": "MIT",
+  "author": "Marty Zalega <marty@zalega.me>",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
