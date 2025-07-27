@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CopyContext, EmojiCycler, Field } from "shared";
+import { CopyContext, EmojiCycler, Field } from "@somethingmate/shared";
 import {
   isValidCidr,
   isValidIp,

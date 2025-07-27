@@ -26,10 +26,10 @@ jobs:
         uses: actions/setup-node@v4
       - name: Clean Install 🧹
         run: |
-          npm i --workspace ${{matrix.package}}
-          npm ci --workspace ${{matrix.package}}
+          npm i --workspace @somethingmate/${{matrix.package}}
+          npm ci --workspace @somethingmate/${{matrix.package}}
       - name: Build 🚧
-        run: npm run build --workspace ${{matrix.package}}
+        run: npm run build --workspace @somethingmate/${{matrix.package}}
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
