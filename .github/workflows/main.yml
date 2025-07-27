@@ -26,7 +26,7 @@ jobs:
       - name: Build 🚧
         run: npm run build --workspace ${{matrix.package}}
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           github_token: ${{ secrets.PAT }}
           repository-name: "evilmarty/${{matrix.package}}"
