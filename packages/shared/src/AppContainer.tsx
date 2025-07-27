@@ -5,6 +5,8 @@ import type { FC } from "react";
 import { Github } from "lucide-react";
 import type { AppContainerProps } from "./types";
 
+const EMOJIS = ["❤️", "🍺", "🌯", "🥃", "🍦"];
+
 const AppContainer: FC<AppContainerProps> = ({ name, logo, children }) => {
   const copiedField = useState<string | null>(null);
   return (
@@ -16,10 +18,7 @@ const AppContainer: FC<AppContainerProps> = ({ name, logo, children }) => {
       <footer className="footer sm:footer-horizontal text-neutral-content items-center mt-4 p-4">
         <aside className="grid-flow-col items-center">
           Made with
-          <EmojiCycler
-            emojis={["❤️", "🍺", "🌯", "🥃", "🍦"]}
-            className="inline-block mx-1"
-          />
+          <EmojiCycler emojis={EMOJIS} className="inline-block mx-1" />
           by
           <a href="https://marty.zalega.me" className="ml-1">
             evilmarty
