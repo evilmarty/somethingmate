@@ -14,7 +14,6 @@ import {
   formatTimeForInput,
 } from "./utils";
 import logo from "./logo.svg";
-import "./App.css"; // Import your CSS file for styling
 
 const MERIDIANS = getMeridians();
 const [AM, PM] = MERIDIANS;

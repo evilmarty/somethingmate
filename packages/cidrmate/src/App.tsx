@@ -13,7 +13,6 @@ import {
   getNetworkDetails,
 } from "./utils";
 import logo from "./logo.svg";
-import "./App.css"; // Import your CSS file for styling
 
 const DEFAULT_CIDR = "192.168.1.0/24";
 
