@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "TZ=Etc/UTC vitest",
+    "test": "TZ=Etc/UTC vitest run",
+    "test:watch": "TZ=Etc/UTC vitest watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage"
   },
