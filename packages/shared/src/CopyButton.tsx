@@ -22,11 +22,11 @@ const CopyButton: React.FC<CopyButtonProps> = ({
   return (
     <button
       onClick={() => copyToClipboard(value, fieldName)}
-      className={`${className} text-gray-500 hover:text-blue-500 transition-colors`}
+      className={`${className || ""} btn btn-soft`}
       title="Copy to clipboard"
     >
       {copiedField === fieldName ? (
-        <Check size={size} className="text-green-500" />
+        <Check size={size} className="text-success" />
       ) : (
         <Copy size={size} />
       )}

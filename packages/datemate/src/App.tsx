@@ -277,8 +277,8 @@ const App = () => {
           readOnly
         />
 
-        <details className="mx-2 px-4 open:py-4 bg-gray-100 dark:bg-gray-900 border-t-0 border border-gray-300 dark:border-gray-900 rounded-md rounded-t-none transition-all transition-discrete overflow-hidden group">
-          <summary className="transition-all py-0 not-group-open:hover:py-1 list-none cursor-pointer text-xs text-center font-bold text-gray-500 dark:text-gray-400">
+        <details className="mx-2 px-4 open:py-4 bg-base-200 border-t-0 border border-base-300 rounded-md rounded-t-none transition-all transition-discrete overflow-hidden group">
+          <summary className="transition-all py-0 not-group-open:hover:py-1 list-none cursor-pointer text-xs text-center font-bold text-base-content opacity-50">
             Display Options
           </summary>
           <div className="grid grid-cols-2 gap-2 pt-4 transition-all transition-discrete overflow-hidden h-0 group-open:h-auto">
