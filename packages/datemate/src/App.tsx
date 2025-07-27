@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import Field from "./Field";
-import CopyContext from "./CopyContext";
-import EmojiCycler from "./EmojiCycler";
+import { CopyContext, EmojiCycler, Field } from "shared";
 import {
   getDateInTimezone,
   getCurrentTimezone,
