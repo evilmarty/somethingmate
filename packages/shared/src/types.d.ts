@@ -1,3 +1,9 @@
+export interface AppContainerProps {
+  name: string;
+  logo: string;
+  children: React.ReactNode;
+}
+
 export interface CopyButtonProps {
   value: string;
   fieldName: string;

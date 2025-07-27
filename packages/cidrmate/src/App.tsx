@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CopyContext, EmojiCycler, Field } from "@somethingmate/shared";
+import { AppContainer, Field } from "@somethingmate/shared";
 import {
   isValidCidr,
   isValidIp,
@@ -56,7 +56,6 @@ function getDerivedValuesFromCidr(cidr: string): Record<string, string> {
 }
 
 const App = () => {
-  const copiedField = useState<string | null>(null);
   const [derivedValues, setDerivedValues] = useState(() => {
     return getDerivedValuesFromCidr(getDefaultCidr());
   });
@@ -155,125 +154,107 @@ const App = () => {
   };
 
   return (
-    <div className="max-w-2xl container mx-auto p-6 min-h-screen">
-      <img src={logo} alt="CIDR Mate" className="w-50 mx-auto" />
-      <CopyContext.Provider value={copiedField}>
-        <div className="space-y-2">
-          <Field
-            type="cidr"
-            label="CIDR"
-            value={rawValues.cidr}
-            onChange={(e) => handleCidrChange(e.target.value.trim(), false)}
-            onBlur={(e) => handleCidrChange(e.target.value.trim(), true)}
-            placeholder="192.168.1.0/24"
-            fieldName="cidr"
-          />
+    <AppContainer name="CIDR Mate" logo={logo}>
+      <Field
+        type="cidr"
+        label="CIDR"
+        value={rawValues.cidr}
+        onChange={(e) => handleCidrChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleCidrChange(e.target.value.trim(), true)}
+        placeholder="192.168.1.0/24"
+        fieldName="cidr"
+      />
 
-          <Field
-            type="ip"
-            label="IP"
-            value={rawValues.ip}
-            onChange={(e) => handleIpChange(e.target.value.trim(), false)}
-            onBlur={(e) => handleIpChange(e.target.value.trim(), true)}
-            placeholder="192.168.1.0"
-            fieldName="ip"
-          />
+      <Field
+        type="ip"
+        label="IP"
+        value={rawValues.ip}
+        onChange={(e) => handleIpChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleIpChange(e.target.value.trim(), true)}
+        placeholder="192.168.1.0"
+        fieldName="ip"
+      />
 
-          <Field
-            label="Integer"
-            type="number"
-            value={rawValues.ipInt}
-            onChange={(e) => handleIntChange(e.target.value.trim(), false)}
-            onBlur={(e) => handleIntChange(e.target.value.trim(), true)}
-            fieldName="int"
-          />
+      <Field
+        label="Integer"
+        type="number"
+        value={rawValues.ipInt}
+        onChange={(e) => handleIntChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleIntChange(e.target.value.trim(), true)}
+        fieldName="int"
+      />
 
-          <Field
-            label="Prefix"
-            type="number"
-            min="0"
-            max="32"
-            value={rawValues.prefix}
-            onChange={(e) => handlePrefixChange(e.target.value.trim(), false)}
-            onBlur={(e) => handlePrefixChange(e.target.value.trim(), true)}
-            placeholder="24"
-            fieldName="prefix"
-          />
+      <Field
+        label="Prefix"
+        type="number"
+        min="0"
+        max="32"
+        value={rawValues.prefix}
+        onChange={(e) => handlePrefixChange(e.target.value.trim(), false)}
+        onBlur={(e) => handlePrefixChange(e.target.value.trim(), true)}
+        placeholder="24"
+        fieldName="prefix"
+      />
 
-          <Field
-            type="ip"
-            label="Subnet Mask"
-            value={rawValues.subnetMask}
-            onChange={(e) =>
-              handleSubnetMaskChange(e.target.value.trim(), false)
-            }
-            onBlur={(e) => handleSubnetMaskChange(e.target.value.trim(), true)}
-            placeholder="255.255.255.0"
-            fieldName="subnetMask"
-          />
+      <Field
+        type="ip"
+        label="Subnet Mask"
+        value={rawValues.subnetMask}
+        onChange={(e) => handleSubnetMaskChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleSubnetMaskChange(e.target.value.trim(), true)}
+        placeholder="255.255.255.0"
+        fieldName="subnetMask"
+      />
 
-          <Field
-            type="ip"
-            label="Wildcard Mask"
-            value={rawValues.wildcardMask}
-            placeholder="0.0.0.255"
-            fieldName="wildcardMask"
-            readOnly
-          />
+      <Field
+        type="ip"
+        label="Wildcard Mask"
+        value={rawValues.wildcardMask}
+        placeholder="0.0.0.255"
+        fieldName="wildcardMask"
+        readOnly
+      />
 
-          <Field
-            type="ip"
-            label="Network Address"
-            value={rawValues.networkAddress}
-            fieldName="networkAddress"
-            readOnly
-          />
+      <Field
+        type="ip"
+        label="Network Address"
+        value={rawValues.networkAddress}
+        fieldName="networkAddress"
+        readOnly
+      />
 
-          <Field
-            type="ip"
-            label="Broadcast Address"
-            value={rawValues.broadcastAddress}
-            fieldName="broadcastAddress"
-            readOnly
-          />
+      <Field
+        type="ip"
+        label="Broadcast Address"
+        value={rawValues.broadcastAddress}
+        fieldName="broadcastAddress"
+        readOnly
+      />
 
-          <Field
-            type="ip"
-            label="First Host"
-            value={rawValues.firstHost}
-            fieldName="firstHost"
-            readOnly
-          />
+      <Field
+        type="ip"
+        label="First Host"
+        value={rawValues.firstHost}
+        fieldName="firstHost"
+        readOnly
+      />
 
-          <Field
-            type="ip"
-            label="Last Host"
-            value={rawValues.lastHost}
-            fieldName="lastHost"
-            readOnly
-          />
+      <Field
+        type="ip"
+        label="Last Host"
+        value={rawValues.lastHost}
+        fieldName="lastHost"
+        readOnly
+      />
 
-          <Field
-            type="number"
-            label="Total Hosts"
-            value={rawValues.totalHosts}
-            fieldName="totalHosts"
-            readOnly
-          />
-        </div>
-      </CopyContext.Provider>
-      <div className="mt-8 text-sm text-center font-medium text-gray-500 dark:text-gray-400">
-        Made with
-        <EmojiCycler
-          emojis={["❤️", "🍺", "🌯", "🥃", "🍦"]}
-          className="inline-block mx-1"
-        />
-        by
-        <a href="https://marty.zalega.me" className="ml-1">
-          evilmarty
-        </a>
-      </div>
-    </div>
+      <Field
+        type="number"
+        label="Total Hosts"
+        value={rawValues.totalHosts}
+        fieldName="totalHosts"
+        readOnly
+      />
+    </AppContainer>
   );
 };
 
