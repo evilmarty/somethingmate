@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "*.json"
+      - "packages/**"
+      - .github/workflows/main.yml
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -28,8 +32,9 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.PAT }}
+          token: ${{ secrets.PAT }}
           repository-name: "evilmarty/${{matrix.package}}"
           branch: gh-pages
           folder: "./packages/${{matrix.package}}/dist"
           clean: true
+          clean-exclude: README.md

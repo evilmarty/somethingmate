@@ -3,6 +3,10 @@ on:
   push:
     branches-ignore:
       - master
+    paths:
+      - "*.json"
+      - "packages/**"
+      - .github/workflows/ci.yml
 
 jobs:
   build:
