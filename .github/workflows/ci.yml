@@ -39,6 +39,7 @@ jobs:
         package:
           - datemate
           - cidrmate
+          - shared
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
