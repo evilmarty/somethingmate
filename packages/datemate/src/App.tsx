@@ -277,11 +277,11 @@ const App = () => {
           readOnly
         />
 
-        <details className="mx-2 px-4 open:py-4 bg-base-200 border-t-0 border border-base-300 rounded-md rounded-t-none transition-all transition-discrete overflow-hidden group">
+        <details className="mx-2 open:py-4 bg-base-200 border-t-0 border border-base-300 rounded-md rounded-t-none transition-all transition-discrete overflow-hidden group box-border">
           <summary className="transition-all py-0 not-group-open:hover:py-1 list-none cursor-pointer text-xs text-center font-bold text-base-content opacity-50">
             Display Options
           </summary>
-          <div className="grid grid-cols-2 gap-2 pt-4 transition-all transition-discrete overflow-hidden h-0 group-open:h-auto">
+          <div className="grid grid-cols-2 gap-2 px-4 pt-4 transition-all transition-discrete overflow-hidden h-0 group-open:h-auto box-border">
             <Field
               label="Day"
               fieldName="day-select"
@@ -289,6 +289,7 @@ const App = () => {
               onChange={(e) => handleDisplayOptionChange("day", e.target.value)}
               options={DAY_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-1"
             />
             <Field
@@ -300,6 +301,7 @@ const App = () => {
               }
               options={WEEKDAY_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-3"
             />
             <Field
@@ -311,6 +313,7 @@ const App = () => {
               }
               options={MONTH_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-5"
             />
             <Field
@@ -322,6 +325,7 @@ const App = () => {
               }
               options={YEAR_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-7"
             />
             <Field
@@ -333,6 +337,7 @@ const App = () => {
               }
               options={HOUR_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-2"
             />
             <Field
@@ -344,6 +349,7 @@ const App = () => {
               }
               options={MINUTE_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-4"
             />
             <Field
@@ -355,6 +361,7 @@ const App = () => {
               }
               options={SECOND_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-6"
             />
             <Field
@@ -366,6 +373,7 @@ const App = () => {
               }
               options={TIMEZONE_NAME_OPTIONS}
               copyButton={false}
+              size="sm"
               className="order-8"
             />
           </div>

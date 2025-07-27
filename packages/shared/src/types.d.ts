@@ -26,6 +26,7 @@ export interface InputProps
 export interface FieldProps extends InputProps {
   label?: string;
   align?: "left" | "center" | "right";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   fieldName?: string;
   className?: string;
   copyButton?: boolean;

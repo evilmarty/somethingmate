@@ -9,15 +9,24 @@ const ALIGNMENTS = {
   right: "justify-end text-right [text-align-last:right]",
 };
 
+const SIZES = {
+  xs: "input-xs",
+  sm: "input-sm",
+  md: "input-md",
+  lg: "input-lg",
+  xl: "input-xl",
+};
+
 const Label: FC<FieldProps> = ({
   value,
+  size = "md",
   label = undefined,
   align = "right",
   fieldName = null,
   className = null,
   ...rest
 }) => (
-  <label className={`${className || ""} input w-full`}>
+  <label className={`${className || ""} input ${SIZES[size]} w-full`}>
     {label && <span className="label">{label}</span>}
     <Input
       id={fieldName || label}
