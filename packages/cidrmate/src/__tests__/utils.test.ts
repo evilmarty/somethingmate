@@ -17,7 +17,7 @@ describe("cidrToIpPrefix", () => {
     expect(cidrToIpPrefix("192.168.1.1/24")).toEqual(["192.168.1.1", 24]);
   });
   it("should return null when CIDR is invalid", () => {
-    expect(cidrToIpPrefix("999.999.9.9/99")).toEqual(null);
+    expect(cidrToIpPrefix("999.999.9.9/99")).toEqual(["", 0]);
   });
 });
 

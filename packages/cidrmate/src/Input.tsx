@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import BasicInput from "./BasicInput";
 import SelectInput from "./SelectInput";
 import type { InputProps } from "./types";

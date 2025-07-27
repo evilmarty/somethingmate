@@ -1,24 +1,24 @@
-export function cidrToIpPrefix(cidr: string): [string, integer] | null {
+export function cidrToIpPrefix(cidr: string): [string, number] {
   if (!isValidCidr(cidr)) {
-    return null;
+    return ["", 0];
   }
   const [ip, prefix] = cidr.split("/");
   const prefixNum = parseInt(prefix, 10);
   return [ip, prefixNum];
 }
 
-export function ipPrefixToCidr(ip: string, prefix: integer): string {
+export function ipPrefixToCidr(ip: string, prefix: number): string {
   if (isValidIp(ip) && isValidPrefix(prefix)) {
     return `${ip}/${prefix}`;
   }
   return "";
 }
 
-export function ipToInt(ip: string): integer {
+export function ipToInt(ip: string): number {
   return ip.split(".").reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0);
 }
 
-export function intToIp(int: integer): string {
+export function intToIp(int: number): string {
   return [
     (int >>> 24) & 255,
     (int >>> 16) & 255,
@@ -27,11 +27,11 @@ export function intToIp(int: integer): string {
   ].join(".");
 }
 
-function prefixToMaskInt(prefix: integer): integer {
+function prefixToMaskInt(prefix: number): number {
   return (0xffffffff << (32 - prefix)) >>> 0;
 }
 
-export function prefixToMask(prefix: integer): string {
+export function prefixToMask(prefix: number): string {
   return intToIp(prefixToMaskInt(prefix));
 }
 
@@ -44,7 +44,7 @@ export function maskToPrefix(mask: string): number {
 
 export function getNetworkDetails(
   ip: string,
-  prefix: integer,
+  prefix: number,
 ): {
   networkAddress: string;
   broadcastAddress: string;
@@ -81,7 +81,7 @@ export function isValidIp(ip: string): boolean {
   );
 }
 
-export function isValidCidr(cidr: any): boolean {
+export function isValidCidr(cidr: string | null): boolean {
   if (typeof cidr !== "string") {
     return false;
   }
@@ -89,7 +89,7 @@ export function isValidCidr(cidr: any): boolean {
   return isValidIp(ip) && isValidPrefix(prefix);
 }
 
-export function isValidPrefix(prefix: integer | string): boolean {
+export function isValidPrefix(prefix: number | string): boolean {
   const prefixNum = typeof prefix === "string" ? parseInt(prefix) : prefix;
   return typeof prefixNum === "number" && prefixNum >= 0 && prefixNum <= 32;
 }

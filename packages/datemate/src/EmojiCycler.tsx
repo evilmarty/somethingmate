@@ -19,7 +19,7 @@ const EmojiCycler: React.FC<EmojiCyclerProps> = ({
     }, delay); // Change emoji every 1 second
 
     return () => clearInterval(interval);
-  }, [emojis.length]);
+  }, [emojis.length, delay]);
 
   return (
     <div className={`${className} animate-bounce`}>

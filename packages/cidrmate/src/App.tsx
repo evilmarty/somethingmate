@@ -36,8 +36,8 @@ function getDefaultCidr(): string {
 }
 
 function getDerivedValues(
-  ipInt: integer,
-  prefix: integer,
+  ipInt: number,
+  prefix: number,
 ): Record<string, string> {
   const ip = intToIp(ipInt);
   const details = getNetworkDetails(ip, prefix);
@@ -81,8 +81,8 @@ const App = () => {
   });
 
   const updateDerivedValues = (
-    ipInt: integer,
-    prefix: integer,
+    ipInt: number,
+    prefix: number,
     updatedUrl: boolean = true,
   ) => {
     const newValues = getDerivedValues(ipInt, prefix);
@@ -119,7 +119,11 @@ const App = () => {
 
   const handleIpChange = (value: string, reset: boolean = false) => {
     if (isValidIp(value)) {
-      updateDerivedValues(ipToInt(value), derivedValues.prefix, reset);
+      updateDerivedValues(
+        ipToInt(value),
+        parseInt(derivedValues.prefix),
+        reset,
+      );
     } else {
       updateRawValues({ ip: value }, reset);
     }
@@ -128,7 +132,7 @@ const App = () => {
   const handlePrefixChange = (value: string, reset: boolean = false) => {
     const prefixNum = parseInt(value);
     if (isValidPrefix(prefixNum)) {
-      updateDerivedValues(derivedValues.ipInt, prefixNum, reset);
+      updateDerivedValues(parseInt(derivedValues.ipInt), prefixNum, reset);
     } else {
       updateRawValues({ prefix: value }, reset);
     }
@@ -138,7 +142,7 @@ const App = () => {
     const intValue = parseInt(value);
     const ip = intToIp(intValue);
     if (isValidIp(ip)) {
-      updateDerivedValues(intValue, derivedValues.prefix, reset);
+      updateDerivedValues(intValue, parseInt(derivedValues.prefix), reset);
     } else {
       updateRawValues({ ipInt: value }, reset);
     }
@@ -147,7 +151,7 @@ const App = () => {
   const handleSubnetMaskChange = (value: string, reset: boolean = false) => {
     if (isValidIp(value)) {
       const prefixNum = maskToPrefix(value);
-      updateDerivedValues(derivedValues.ipInt, prefixNum, reset);
+      updateDerivedValues(parseInt(derivedValues.ipInt), prefixNum, reset);
     } else {
       updateRawValues({ subnetMask: value }, reset);
     }

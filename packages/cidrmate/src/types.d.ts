@@ -9,7 +9,7 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   id?: string;
   type?: string;
-  value: any;
+  value: string | number;
   options?: string[] | Record<string, string>;
   className?: string | undefined;
   onChange?: (
