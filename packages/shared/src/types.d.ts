@@ -6,7 +6,6 @@ export interface AppContainerProps {
 
 export interface CopyButtonProps {
   value: string;
-  fieldName: string;
   size?: number;
   className?: string | null;
 }

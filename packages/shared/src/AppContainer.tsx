@@ -1,5 +1,3 @@
-import { useState } from "react";
-import CopyContext from "./CopyContext";
 import EmojiCycler from "./EmojiCycler";
 import type { FC } from "react";
 import { Github } from "lucide-react";
@@ -8,13 +6,10 @@ import type { AppContainerProps } from "./types";
 const EMOJIS = ["❤️", "🍺", "🌯", "🥃", "🍦"];
 
 const AppContainer: FC<AppContainerProps> = ({ name, logo, children }) => {
-  const copiedField = useState<string | null>(null);
   return (
     <div className="max-w-2xl container mx-auto p-6 min-h-screen">
       <img src={logo} alt={name} className="w-50 mx-auto" />
-      <CopyContext.Provider value={copiedField}>
-        <div className="space-y-2">{children}</div>
-      </CopyContext.Provider>
+      <div className="space-y-2">{children}</div>
       <footer className="footer sm:footer-horizontal text-neutral-content items-center mt-4 p-4">
         <aside className="grid-flow-col items-center">
           Made with

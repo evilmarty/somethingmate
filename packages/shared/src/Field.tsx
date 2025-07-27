@@ -52,11 +52,7 @@ const LabelWithCopyButton: FC<FieldProps> = ({
       className={`${className || ""} join-item`}
       {...rest}
     />
-    <CopyButton
-      value={String(value)}
-      fieldName={fieldName || label || ""}
-      className="join-item"
-    />
+    <CopyButton value={String(value)} className="join-item" />
   </div>
 );
 
