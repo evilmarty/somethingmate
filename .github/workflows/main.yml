@@ -1,14 +1,15 @@
 name: Build and Deploy
 on:
-  push:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - "*.json"
-      - "packages/**"
-      - .github/workflows/main.yml
 jobs:
   build-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment: deployment
     strategy:
