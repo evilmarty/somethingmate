@@ -21,7 +21,7 @@ describe("App", () => {
     fireEvent.change(ipInput, { target: { value: "192.168.1.1" } });
 
     expect(screen.getByLabelText("CIDR").value).toBe("192.168.1.1/24");
-    expect(screen.getByLabelText("Integer").value).toBe("-1062731519");
+    expect(screen.getByLabelText("Integer").value).toBe("3232235777");
     expect(screen.getByLabelText("Prefix").value).toBe("24");
     expect(screen.getByLabelText("Subnet Mask").value).toBe("255.255.255.0");
     expect(screen.getByLabelText("Total Hosts").value).toBe("254");
@@ -46,7 +46,7 @@ describe("App", () => {
 
     expect(screen.getByLabelText("CIDR").value).toBe("192.168.1.0/16");
     expect(screen.getByLabelText("IP").value).toBe("192.168.1.0");
-    expect(screen.getByLabelText("Integer").value).toBe("-1062731520");
+    expect(screen.getByLabelText("Integer").value).toBe("3232235776");
     expect(screen.getByLabelText("Subnet Mask").value).toBe("255.255.0.0");
     expect(screen.getByLabelText("Total Hosts").value).toBe("65534");
   });
@@ -58,7 +58,7 @@ describe("App", () => {
 
     expect(screen.getByLabelText("CIDR").value).toBe("192.168.1.0/16");
     expect(screen.getByLabelText("IP").value).toBe("192.168.1.0");
-    expect(screen.getByLabelText("Integer").value).toBe("-1062731520");
+    expect(screen.getByLabelText("Integer").value).toBe("3232235776");
     expect(screen.getByLabelText("Prefix").value).toBe("16");
     expect(screen.getByLabelText("Total Hosts").value).toBe("65534");
   });
