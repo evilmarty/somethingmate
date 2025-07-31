@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { AppContainer, Field } from "@somethingmate/shared";
 import {
   getDateInTimezone,
@@ -278,7 +279,15 @@ const App = () => {
         />
 
         <details className="mx-2 open:py-4 bg-base-200 border-t-0 border border-base-300 rounded-md rounded-t-none transition-all transition-discrete overflow-hidden group box-border">
-          <summary className="transition-all py-0 not-group-open:hover:py-1 list-none cursor-pointer text-xs text-center font-bold text-base-content opacity-50">
+          <summary className="transition-all py-2 not-group-open:hover:py-3 list-none cursor-pointer text-xs text-center font-bold text-base-content opacity-50">
+            <div className="swap group-open:swap-active">
+              <div className="swap-off">
+                <ChevronDown size={16} />
+              </div>
+              <div className="swap-on">
+                <ChevronUp size={16} />
+              </div>
+            </div>
             Display Options
           </summary>
           <div className="grid grid-cols-2 gap-2 px-4 pt-4 transition-all transition-discrete overflow-hidden h-0 group-open:h-auto box-border">
