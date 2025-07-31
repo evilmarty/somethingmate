@@ -21,14 +21,15 @@ const CopyButton: FC<CopyButtonProps> = ({
   return (
     <button
       onClick={() => copyToClipboard(value)}
-      className={`${className || ""} btn btn-soft`}
+      className={`${className || ""} btn btn-soft swap ${copiedField && "swap-active"}`}
       title="Copy to clipboard"
     >
-      {copiedField ? (
+      <span className="inline-block swap-on">
         <Check size={size} className="text-success" />
-      ) : (
+      </span>
+      <span className="inline-block swap-off">
         <Copy size={size} />
-      )}
+      </span>
     </button>
   );
 };
