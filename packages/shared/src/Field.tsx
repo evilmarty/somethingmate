@@ -31,7 +31,7 @@ const Label: FC<FieldProps> = ({
     <Input
       id={fieldName || label}
       value={value}
-      className={`${ALIGNMENTS[align]}`}
+      className={`${ALIGNMENTS[align]} w-full`}
       {...rest}
     />
   </label>
