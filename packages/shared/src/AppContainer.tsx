@@ -10,17 +10,26 @@ const AppContainer: FC<AppContainerProps> = ({ name, logo, children }) => {
     <div className="max-w-2xl container mx-auto p-6 min-h-screen">
       <img src={logo} alt={name} className="w-50 mx-auto" />
       <div className="space-y-2">{children}</div>
-      <footer className="footer sm:footer-horizontal text-neutral-content items-center mt-4 p-4">
+      <footer className="footer footer-horizontal text-neutral-content items-center mt-4 p-4">
         <aside className="grid-flow-col items-center">
           Made with
-          <EmojiCycler emojis={EMOJIS} className="inline-block mx-1" />
+          <EmojiCycler emojis={EMOJIS} className="inline-block" />
           by
-          <a href="https://marty.zalega.me" className="ml-1">
+          <a
+            href="https://marty.zalega.me"
+            className="link link-accent"
+            title="Website"
+          >
             evilmarty
           </a>
         </aside>
-        <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-          <a href="https://mastadon.social/evilmarty" target="_blank">
+        <nav className="grid-flow-col gap-4 place-self-center justify-self-end">
+          <a
+            href="https://mastadon.social/evilmarty"
+            target="_blank"
+            className="link hover:link-neutral"
+            title="Mastodon"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 74 79"
@@ -32,7 +41,12 @@ const AppContainer: FC<AppContainerProps> = ({ name, logo, children }) => {
               />
             </svg>
           </a>
-          <a href="https://github.com/evilmarty/somthingmate" target="_blank">
+          <a
+            href="https://github.com/evilmarty/somthingmate"
+            target="_blank"
+            className="link hover:link-neutral"
+            title="GitHub"
+          >
             <Github size={16} className="fill-current" />
           </a>
         </nav>
