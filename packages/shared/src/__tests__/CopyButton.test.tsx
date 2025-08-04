@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import CopyButton from "../CopyButton";
 
@@ -14,7 +20,9 @@ describe("CopyButton", () => {
     const button = screen.getByTitle("Copy to clipboard");
     expect(button).toBeInTheDocument();
 
-    await fireEvent.click(button);
+    await act(async () => {
+      await fireEvent.click(button);
+    });
 
     await waitFor(() => {
       expect(clipboardMock.writeText).toHaveBeenCalledWith("Test Value");

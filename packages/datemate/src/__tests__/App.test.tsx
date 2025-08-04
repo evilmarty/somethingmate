@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import App from "../App";
 
@@ -148,7 +148,9 @@ describe("App", () => {
     const spy = vi.spyOn(navigator.clipboard, "writeText");
     render(<App />);
     const copyButton = screen.getAllByTitle("Copy to clipboard")[0];
-    fireEvent.click(copyButton);
+    await act(async () => {
+      await fireEvent.click(copyButton);
+    });
     expect(spy).toHaveBeenCalledWith(
       // Some versions of Node.js format the date string differently.
       expect.stringMatching(

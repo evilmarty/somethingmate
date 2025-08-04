@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import App from "../App";
 
@@ -61,5 +61,15 @@ describe("App", () => {
     expect(screen.getByLabelText("Integer").value).toBe("3232235776");
     expect(screen.getByLabelText("Prefix").value).toBe("16");
     expect(screen.getByLabelText("Total Hosts").value).toBe("65534");
+  });
+
+  it("should copy the cidr when the copy button is clicked", async () => {
+    const spy = vi.spyOn(navigator.clipboard, "writeText");
+    render(<App />);
+    const copyButton = screen.getAllByTitle("Copy to clipboard")[0];
+    await act(async () => {
+      await fireEvent.click(copyButton);
+    });
+    expect(spy).toHaveBeenCalledWith("192.168.1.0/24");
   });
 });
