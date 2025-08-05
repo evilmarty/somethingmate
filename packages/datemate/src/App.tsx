@@ -16,6 +16,21 @@ import {
 } from "./utils";
 import logo from "./logo.svg";
 
+type DerivedValues = {
+  relativeTime: string;
+  date: string;
+  time: string;
+  timestamp: string;
+  year: string;
+  month: string;
+  day: string;
+  dayOfWeek: string;
+  hour: string;
+  meridian: string;
+  minute: string;
+  second: string;
+};
+
 const MERIDIANS = getMeridians();
 const [AM, PM] = MERIDIANS;
 const TIMEZONES = getTimezones();
@@ -62,11 +77,11 @@ const TIMEZONE_NAME_OPTIONS = {
   longGeneric: "Long Generic",
 };
 
-const getMeridian = (date: Date) => {
+function getMeridian(date: Date) {
   return date.getHours() >= 12 ? PM : AM;
-};
+}
 
-const getDateFromUrlParam = (): Date | null => {
+function getDateFromUrlParam(): Date | null {
   const urlParams = new URLSearchParams(window.location.search);
   const dateParam = urlParams.get("d");
   if (dateParam) {
@@ -76,14 +91,35 @@ const getDateFromUrlParam = (): Date | null => {
     }
   }
   return null;
-};
+}
 
-const setDateInUrlParam = (date: Date) => {
+function setDateInUrlParam(date: Date) {
   const url = new URL(window.location.href);
   const dateString = date.toISOString();
   url.searchParams.set("d", dateString);
   window.history.pushState({ date: dateString }, "", url.toString());
-};
+}
+
+function getDerivedValues(date: Date, timezone: string): DerivedValues {
+  const displayDate =
+    timezone === getCurrentTimezone()
+      ? date
+      : getDateInTimezone(date, timezone);
+  return {
+    relativeTime: getRelativeTime(displayDate),
+    date: formatDateForInput(displayDate),
+    time: formatTimeForInput(displayDate),
+    timestamp: displayDate.getTime().toString(),
+    year: displayDate.getFullYear().toString(),
+    month: MONTHS[displayDate.getMonth()],
+    day: displayDate.getDate().toString(),
+    dayOfWeek: DAYS_OF_WEEK[displayDate.getDay()],
+    hour: displayDate.getHours().toString(),
+    meridian: getMeridian(displayDate),
+    minute: displayDate.getMinutes().toString(),
+    second: displayDate.getSeconds().toString(),
+  };
+}
 
 const App = () => {
   const [currentDate, setCurrentDate] = useState<Date>(
@@ -91,8 +127,9 @@ const App = () => {
   );
   const [selectedTimezone, setSelectedTimezone] =
     useState<string>(getCurrentTimezone);
-  const [relativeTime, setRelativeTime] = useState<string>(
-    getRelativeTime(currentDate),
+  const derivedValues = getDerivedValues(currentDate, selectedTimezone);
+  const [rawValues, setRawValues] = useState<DerivedValues>(
+    () => derivedValues,
   );
   const [displayOptions, setDisplayOptions] =
     useState<Intl.DateTimeFormatOptions>({
@@ -111,9 +148,8 @@ const App = () => {
     window.addEventListener(
       "popstate",
       (e) => {
-        const dateString = e.state?.date;
-        const date = dateString ? new Date(dateString) : new Date();
-        if (!isNaN(date.getTime())) {
+        const date = new Date(e.state?.date);
+        if (!isNaN(date.valueOf())) {
           updateCurrentDate(date, false);
         }
       },
@@ -127,8 +163,9 @@ const App = () => {
 
   // Update current date and relative time
   const updateCurrentDate = (date: Date, updateUrl: boolean = true) => {
+    const newValues = getDerivedValues(date, selectedTimezone);
     setCurrentDate(date);
-    setRelativeTime(getRelativeTime(date));
+    setRawValues(newValues);
     if (updateUrl) {
       setDateInUrlParam(date);
     }
@@ -144,70 +181,74 @@ const App = () => {
     }));
   };
 
-  // Update date field
-  const handleDateChange = (value: string) => {
+  const maybeUpdateCurrentDate = (
+    newDate: Date,
+    key: keyof DerivedValues,
+    value: string,
+    reset: boolean = false,
+  ) => {
+    if (!isNaN(newDate.valueOf())) {
+      updateCurrentDate(newDate, true);
+    } else {
+      setRawValues(reset ? derivedValues : { ...rawValues, [key]: value });
+    }
+  };
+
+  const handleDateChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     const [year, month, day] = value.split("-");
     newDate.setFullYear(parseInt(year));
     newDate.setMonth(parseInt(month) - 1);
     newDate.setDate(parseInt(day));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "date", value, reset);
   };
 
-  // Update time field
-  const handleTimeChange = (value: string) => {
+  const handleTimeChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     const [hours, minutes] = value.split(":");
     newDate.setHours(parseInt(hours));
     newDate.setMinutes(parseInt(minutes));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "time", value, reset);
   };
 
-  // Update timestamp field
-  const handleTimestampChange = (value: string) => {
+  const handleTimestampChange = (value: string, reset: boolean = false) => {
     const timestamp = parseInt(value);
-    if (!isNaN(timestamp)) {
-      updateCurrentDate(new Date(timestamp));
-    }
+    const newDate = new Date(timestamp);
+    maybeUpdateCurrentDate(newDate, "timestamp", value, reset);
   };
 
-  // Update year field
-  const handleYearChange = (value: string) => {
+  const handleYearChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     newDate.setFullYear(parseInt(value));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "year", value, reset);
   };
 
-  // Update month field
-  const handleMonthChange = (value: string) => {
+  const handleMonthChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     const index = MONTHS.indexOf(value);
     newDate.setMonth(index);
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "month", value, reset);
   };
 
-  // Update day field
-  const handleDayChange = (value: string) => {
+  const handleDayChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     newDate.setDate(parseInt(value));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "day", value, reset);
   };
 
-  // Update day of week field
-  const handleDayOfWeekChange = (value: string) => {
+  const handleDayOfWeekChange = (value: string, reset: boolean = false) => {
     const targetDayOfWeek = DAYS_OF_WEEK.indexOf(value);
-    updateCurrentDate(setDay(currentDate, targetDayOfWeek));
+    const newDate = setDay(currentDate, targetDayOfWeek);
+    maybeUpdateCurrentDate(newDate, "dayOfWeek", value, reset);
   };
 
-  // Update hour field
-  const handleHourChange = (value: string) => {
+  const handleHourChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     newDate.setHours(parseInt(value));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "hour", value, reset);
   };
 
-  // Update meridian field (AM/PM)
-  const handleMeridianChange = (value: string) => {
+  const handleMeridianChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     const currentHour = newDate.getHours();
 
@@ -222,48 +263,27 @@ const App = () => {
         newDate.setHours(currentHour + 12);
       }
     }
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "meridian", value, reset);
   };
 
-  // Update minute field
-  const handleMinuteChange = (value: string) => {
+  const handleMinuteChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     newDate.setMinutes(parseInt(value));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "minute", value, reset);
   };
 
-  // Update second field
-  const handleSecondChange = (value: string) => {
+  const handleSecondChange = (value: string, reset: boolean = false) => {
     const newDate = new Date(currentDate);
     newDate.setSeconds(parseInt(value));
-    updateCurrentDate(newDate);
+    maybeUpdateCurrentDate(newDate, "second", value, reset);
   };
 
-  // Parse relative time input and update date
-  const handleRelativeTimeChange = (value: string) => {
-    const newDate = parseRelativeTime(value);
-    if (newDate) {
-      setCurrentDate(newDate);
-    }
-    setRelativeTime(value);
+  const handleRelativeTimeChange = (value: string, reset: boolean = false) => {
+    const newDate = parseRelativeTime(value) || new Date(NaN);
+    maybeUpdateCurrentDate(newDate, "relativeTime", value, reset);
   };
 
-  // Either update date on blur or reset to current relative time
-  const handleRelativeTimeBlur = (value: string) => {
-    const newDate = parseRelativeTime(value);
-    if (newDate) {
-      updateCurrentDate(newDate);
-    } else {
-      setRelativeTime(getRelativeTime(currentDate));
-    }
-  };
-
-  // Display current date in selected timezone
-  const displayDate =
-    selectedTimezone === getCurrentTimezone()
-      ? currentDate
-      : getDateInTimezone(currentDate, selectedTimezone);
-  const localeDate = currentDate.toLocaleString(undefined, {
+  const displayDate = currentDate.toLocaleString(undefined, {
     ...displayOptions,
     timeZone: selectedTimezone,
   });
@@ -272,7 +292,7 @@ const App = () => {
     <AppContainer name="Date Mate" logo={logo}>
       <div className="mb-10">
         <Field
-          value={localeDate}
+          value={displayDate}
           fieldName="datetime"
           align="center"
           readOnly
@@ -391,10 +411,10 @@ const App = () => {
 
       <Field
         label="Relative"
-        value={relativeTime}
+        value={rawValues.relativeTime}
         type="search"
-        onChange={(e) => handleRelativeTimeChange(e.target.value)}
-        onBlur={(e) => handleRelativeTimeBlur(e.target.value)}
+        onChange={(e) => handleRelativeTimeChange(e.target.value, false)}
+        onBlur={(e) => handleRelativeTimeChange(e.target.value.trim(), true)}
         placeholder="e.g., 5 minutes ago, 2 hours from now"
         fieldName="relative"
       />
@@ -402,16 +422,18 @@ const App = () => {
       <Field
         label="Date"
         type="date"
-        value={formatDateForInput(displayDate)}
-        onChange={(e) => handleDateChange(e.target.value)}
+        value={rawValues.date}
+        onChange={(e) => handleDateChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleDateChange(e.target.value.trim(), true)}
         fieldName="date"
       />
 
       <Field
         label="Time"
         type="time"
-        value={formatTimeForInput(displayDate)}
-        onChange={(e) => handleTimeChange(e.target.value)}
+        value={rawValues.time}
+        onChange={(e) => handleTimeChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleTimeChange(e.target.value.trim(), false)}
         fieldName="time"
       />
 
@@ -426,23 +448,26 @@ const App = () => {
       <Field
         label="Timestamp"
         type="number"
-        value={currentDate.getTime()}
-        onChange={(e) => handleTimestampChange(e.target.value)}
+        value={rawValues.timestamp}
+        onChange={(e) => handleTimestampChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleTimestampChange(e.target.value.trim(), true)}
         fieldName="timestamp"
       />
 
       <Field
         label="Year"
         type="number"
-        value={displayDate.getFullYear()}
-        onChange={(e) => handleYearChange(e.target.value)}
+        value={rawValues.year}
+        onChange={(e) => handleYearChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleYearChange(e.target.value.trim(), true)}
         fieldName="year"
       />
 
       <Field
         label="Month"
-        value={MONTHS[displayDate.getMonth()]}
-        onChange={(e) => handleMonthChange(e.target.value)}
+        value={rawValues.month}
+        onChange={(e) => handleMonthChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleMonthChange(e.target.value.trim(), true)}
         options={MONTHS}
         fieldName="month"
       />
@@ -452,15 +477,17 @@ const App = () => {
         type="number"
         min="1"
         max="31"
-        value={displayDate.getDate()}
-        onChange={(e) => handleDayChange(e.target.value)}
+        value={rawValues.day}
+        onChange={(e) => handleDayChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleDayChange(e.target.value.trim(), true)}
         fieldName="day"
       />
 
       <Field
         label="Day of Week"
-        value={DAYS_OF_WEEK[displayDate.getDay()]}
-        onChange={(e) => handleDayOfWeekChange(e.target.value)}
+        value={rawValues.dayOfWeek}
+        onChange={(e) => handleDayOfWeekChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleDayOfWeekChange(e.target.value.trim(), true)}
         options={DAYS_OF_WEEK}
         fieldName="dayOfWeek"
       />
@@ -470,15 +497,17 @@ const App = () => {
         type="number"
         min="0"
         max="23"
-        value={displayDate.getHours()}
-        onChange={(e) => handleHourChange(e.target.value)}
+        value={rawValues.hour}
+        onChange={(e) => handleHourChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleHourChange(e.target.value.trim(), true)}
         fieldName="hour"
       />
 
       <Field
         label="Meridian"
-        value={getMeridian(displayDate)}
-        onChange={(e) => handleMeridianChange(e.target.value)}
+        value={rawValues.meridian}
+        onChange={(e) => handleMeridianChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleMeridianChange(e.target.value.trim(), true)}
         options={MERIDIANS}
         fieldName="meridian"
       />
@@ -488,8 +517,9 @@ const App = () => {
         type="number"
         min="0"
         max="59"
-        value={displayDate.getMinutes()}
-        onChange={(e) => handleMinuteChange(e.target.value)}
+        value={rawValues.minute}
+        onChange={(e) => handleMinuteChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleMinuteChange(e.target.value.trim(), true)}
         fieldName="minute"
       />
 
@@ -498,8 +528,9 @@ const App = () => {
         type="number"
         min="0"
         max="59"
-        value={displayDate.getSeconds()}
-        onChange={(e) => handleSecondChange(e.target.value)}
+        value={rawValues.second}
+        onChange={(e) => handleSecondChange(e.target.value.trim(), false)}
+        onBlur={(e) => handleSecondChange(e.target.value.trim(), true)}
         fieldName="second"
       />
     </AppContainer>
