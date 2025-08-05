@@ -1,5 +1,9 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes:
+    lemonade --default,
+    abyss --prefersdark;
+}
 @source "../../../packages/shared/src";
 
 body {
