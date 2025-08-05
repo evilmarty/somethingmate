@@ -5,6 +5,12 @@ import IpAddress4 from "./IpAddress4";
 import logo from "./logo.svg";
 
 const DEFAULT_CIDR = Cidr4.fromString("192.168.1.0/24");
+const NAME = "CIDR Mate";
+const ABOUT =
+  "CIDR Mate is a simple tool for calculating CIDR notations and their derived values.";
+const LINKS = {
+  "Date Mate": "https://marty.zalega.me/datemate",
+};
 
 type DerivedValues = {
   cidr: string;
@@ -131,7 +137,7 @@ const App = () => {
   };
 
   return (
-    <AppContainer name="CIDR Mate" logo={logo}>
+    <AppContainer name={NAME} about={ABOUT} links={LINKS} logo={logo}>
       <Field
         type="cidr"
         label="CIDR"

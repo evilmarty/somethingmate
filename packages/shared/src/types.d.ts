@@ -1,6 +1,8 @@
 export interface AppContainerProps {
   name: string;
   logo: string;
+  about?: string;
+  links: Record<string, string>;
   children: React.ReactNode;
 }
 

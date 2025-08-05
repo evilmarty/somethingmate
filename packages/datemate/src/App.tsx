@@ -31,6 +31,13 @@ type DerivedValues = {
   second: string;
 };
 
+const NAME = "Date Mate";
+const ABOUT =
+  "Date Mate is a simple tool for manipulating and formatting dates, times, and timezones.";
+const LINKS = {
+  "CIDR Mate": "https://marty.zalega.me/cidrmate",
+};
+
 const MERIDIANS = getMeridians();
 const [AM, PM] = MERIDIANS;
 const TIMEZONES = getTimezones();
@@ -289,7 +296,7 @@ const App = () => {
   });
 
   return (
-    <AppContainer name="Date Mate" logo={logo}>
+    <AppContainer name={NAME} about={ABOUT} links={LINKS} logo={logo}>
       <div className="mb-10">
         <Field
           value={displayDate}
