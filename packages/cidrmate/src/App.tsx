@@ -6,6 +6,20 @@ import logo from "./logo.svg";
 
 const DEFAULT_CIDR = Cidr4.fromString("192.168.1.0/24");
 
+type DerivedValues = {
+  cidr: string;
+  ip: string;
+  ipInt: string;
+  prefix: string;
+  subnetMask: string;
+  networkAddress: string;
+  broadcastAddress: string;
+  wildcardMask: string;
+  firstHost: string;
+  lastHost: string;
+  totalHosts: string;
+};
+
 function getCidrFromUrlParam(): Cidr4 {
   const urlParams = new URLSearchParams(window.location.search);
   return Cidr4.fromString(urlParams.get("cidr") || "");
@@ -23,7 +37,7 @@ function getDefaultCidr(): Cidr4 {
   return isNaN(cidr.valueOf()) ? DEFAULT_CIDR : cidr;
 }
 
-function getDerivedValues(cidr: Cidr4): Record<string, string> {
+function getDerivedValues(cidr: Cidr4): DerivedValues {
   return {
     cidr: cidr.toString(),
     ip: cidr.ip.toString(),
@@ -42,7 +56,9 @@ function getDerivedValues(cidr: Cidr4): Record<string, string> {
 const App = () => {
   const [cidr, setCidr] = useState<Cidr4>(() => getDefaultCidr());
   const derivedValues = getDerivedValues(cidr);
-  const [rawValues, setRawValues] = useState(() => derivedValues);
+  const [rawValues, setRawValues] = useState<DerivedValues>(
+    () => derivedValues,
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -71,53 +87,47 @@ const App = () => {
     }
   };
 
-  const updateRawValues = (
-    raw: Record<string, string>,
-    reset: boolean = false,
-  ) => {
-    setRawValues(reset ? derivedValues : { ...rawValues, ...raw });
-  };
-
   const maybeUpdateCidr = (
     newCidr: Cidr4,
-    updatedRawValues: Record<string, string>,
+    key: keyof DerivedValues,
+    value: string,
     reset: boolean = false,
   ) => {
     if (!isNaN(newCidr.valueOf())) {
       updateCidr(newCidr, reset);
     } else {
-      updateRawValues(updatedRawValues, reset);
+      setRawValues(reset ? derivedValues : { ...rawValues, [key]: value });
     }
   };
 
   const handleCidrChange = (value: string, reset: boolean = false) => {
     const newCidr = Cidr4.fromString(value);
-    maybeUpdateCidr(newCidr, { cidr: value }, reset);
+    maybeUpdateCidr(newCidr, "cidr", value, reset);
   };
 
   const handleIpChange = (value: string, reset: boolean = false) => {
     const ip = IpAddress4.fromString(value);
     const newCidr = new Cidr4(ip, cidr.prefix);
-    maybeUpdateCidr(newCidr, { ip: value }, reset);
+    maybeUpdateCidr(newCidr, "ip", value, reset);
   };
 
   const handlePrefixChange = (value: string, reset: boolean = false) => {
     const prefixNum = parseInt(value, 10);
     const newCidr = new Cidr4(cidr.ip, prefixNum);
-    maybeUpdateCidr(newCidr, { prefix: value }, reset);
+    maybeUpdateCidr(newCidr, "prefix", value, reset);
   };
 
   const handleIntChange = (value: string, reset: boolean = false) => {
     const ip = new IpAddress4(parseInt(value));
     const newCidr = new Cidr4(ip, cidr.prefix);
-    maybeUpdateCidr(newCidr, { ipInt: value }, reset);
+    maybeUpdateCidr(newCidr, "ipInt", value, reset);
   };
 
   const handleSubnetMaskChange = (value: string, reset: boolean = false) => {
     const subnetMask = IpAddress4.fromString(value);
     const prefix = Cidr4.fromSubnetMask(subnetMask);
     const newCidr = new Cidr4(cidr.ip, prefix);
-    maybeUpdateCidr(newCidr, { subnetMask: value }, reset);
+    maybeUpdateCidr(newCidr, "subnetMask", value, reset);
   };
 
   return (
