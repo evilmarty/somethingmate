@@ -36,6 +36,7 @@ const ABOUT =
   "Date Mate is a simple tool for manipulating and formatting dates, times, and timezones.";
 const LINKS = {
   "CIDR Mate": "https://marty.zalega.me/cidrmate",
+  "URL Mate": "https://marty.zalega.me/urlmate",
 };
 
 const MERIDIANS = getMeridians();

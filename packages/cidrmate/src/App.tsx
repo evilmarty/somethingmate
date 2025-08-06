@@ -10,6 +10,7 @@ const ABOUT =
   "CIDR Mate is a simple tool for calculating CIDR notations and their derived values.";
 const LINKS = {
   "Date Mate": "https://marty.zalega.me/datemate",
+  "URL Mate": "https://marty.zalega.me/urlmate",
 };
 
 type DerivedValues = {
