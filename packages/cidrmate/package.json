@@ -1,5 +1,8 @@
 {
   "name": "@somethingmate/cidrmate",
+  "title": "CIDR Mate",
+  "description": "A CIDR calculator web app.",
+  "url": "https://marty.zalega.me/cidrmate",
   "private": true,
   "version": "0.0.0",
   "type": "module",

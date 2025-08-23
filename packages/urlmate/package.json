@@ -1,5 +1,8 @@
 {
   "name": "@somethingmate/urlmate",
+  "title": "URL Mate",
+  "description": "A helpful URL utility web app.",
+  "url": "https://marty.zalega.me/urlmate",
   "private": true,
   "version": "0.0.0",
   "type": "module",

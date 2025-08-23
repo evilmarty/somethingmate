@@ -1,5 +1,8 @@
 {
   "name": "@somethingmate/datemate",
+  "title": "Date Mate",
+  "description": "A simple date helper web app.",
+  "url": "https://marty.zalega.me/datemate",
   "private": true,
   "version": "0.0.0",
   "type": "module",
