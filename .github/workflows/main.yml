@@ -32,6 +32,13 @@ jobs:
           npm ci --workspace @somethingmate/${{matrix.package}}
       - name: Build 🚧
         run: npm run build --workspace @somethingmate/${{matrix.package}}
+      - name: Generate README
+        env:
+          README_PATH: "./packages/${{matrix.package}}/dist/README.md"
+          PACKAGE_PATH: "./packages/${{matrix.package}}/package.json"
+        run: |
+          jq -r '"# \(.title)\n\n\(.description). Visit \(.url).\n\nCode is available at "' "$PACKAGE_PATH" > "$README_PATH"
+          echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}." >> "$README_PATH"
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
@@ -40,4 +47,3 @@ jobs:
           branch: gh-pages
           folder: "./packages/${{matrix.package}}/dist"
           clean: true
-          clean-exclude: README.md
