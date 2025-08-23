@@ -4,6 +4,7 @@ Code repository for the "Something Mate" project, a collection of web applicatio
 
 - [Date Mate](https://marty.zalega.me/datemate) - A simple date helper web app.
 - [CIDR Mate](https://marty.zalega.me/cidrmate) - A CIDR calculator web app.
+- [URL Mate](https://marty.zalega.me/cidrmate) - A helpful URL utility web app.
 
 ## Build instructions
 
