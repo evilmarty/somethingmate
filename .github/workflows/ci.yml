@@ -15,8 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - datemate
           - cidrmate
+          - datemate
+          - emojimate
           - urlmate
     steps:
       - name: Checkout 🛎️
@@ -38,10 +39,11 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - datemate
           - cidrmate
-          - urlmate
+          - datemate
+          - emojimate
           - shared
+          - urlmate
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
