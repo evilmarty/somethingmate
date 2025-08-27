@@ -8,8 +8,13 @@ export interface AppContainerProps {
 
 export interface CopyButtonProps {
   value: string;
+  title?: string;
   size?: number;
   className?: string | null;
+  buttonStyle?: "soft" | "ghost";
+  buttonSize?: "sm" | "md" | "lg";
+  buttonShape?: "square" | "circle";
+  children?: React.ReactNode;
 }
 
 export interface InputProps
