@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 export function useTimeout(defaultDelay: number) {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clear = () => {
     if (timeoutRef.current) {
@@ -10,7 +10,7 @@ export function useTimeout(defaultDelay: number) {
     }
   };
 
-  const set = (callback: void, delay: number = defaultDelay) => {
+  const set = (callback: () => void, delay: number = defaultDelay) => {
     clear();
     timeoutRef.current = setTimeout(() => {
       callback();

@@ -1,9 +1,23 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { FixedSizeGrid } from "react-window";
 import EMOJIS from "emojilib";
 import { AppContainer, CopyButton, Field } from "@somethingmate/shared";
 import { useTimeout } from "./utils";
 import logo from "./logo.svg";
+import type { FC } from "react";
+import type { FixedSizeGridProps } from "react-window"
+
+interface EmojiButtonProps {
+  emoji: string;
+  size: number;
+}
+
+interface ItemProps extends FixedSizeGridProps<string[]> {
+  size: number;
+  rowIndex: number;
+  columnIndex: number;
+  data: string[];
+}
 
 const NAME = "Emoji Mate";
 const ABOUT =
@@ -16,7 +30,7 @@ const LINKS = {
 const EMOJI_KEYS = Object.keys(EMOJIS);
 const SIZE = 32;
 
-function filterEmojis(rawQuery: string, columns: number): [[string, [string]]] {
+function filterEmojis(rawQuery: string): string[] {
   const query = rawQuery.trim().toLowerCase();
   if (!query) {
     return EMOJI_KEYS;
@@ -37,36 +51,36 @@ function getQueryFromParam(): string | null {
   return null;
 }
 
-function setQueryInUrlParam(query: string) {
+function setQueryInUrlParam(query: string): void {
   const newUrl = new URL(window.location.href);
   newUrl.searchParams.set("q", query);
   window.history.pushState({ query }, "", newUrl.toString());
 }
 
-function getItem({ data, columnCount, columnIndex, rowIndex }) {
+function getItem({ data, columnCount, columnIndex, rowIndex }: Pick<ItemProps, "data" | "columnCount" | "columnIndex" | "rowIndex">): string | null {
   const index = rowIndex * columnCount + columnIndex;
   return data[index];
 }
 
-function itemKey(props) {
+function itemKey(props: ItemProps): string {
   const item = getItem(props);
   return item || `${props.rowIndex}-${props.columnIndex}`;
 }
 
-const EmojiButton = ({ emoji, size }) => (
-  <CopyButton value={emoji} title={(EMOJIS[emoji] || [""])[0].replaceAll("_", " ")} buttonStyle="ghost" buttonSize="sm" buttonShape="square">{emoji}</CopyButton>
+const EmojiButton: FC<EmojiButtonProps> = ({ emoji, size }) => (
+  <CopyButton value={emoji} size={size} title={(EMOJIS[emoji] || [""])[0].replaceAll("_", " ")} buttonStyle="ghost" buttonSize="sm" buttonShape="square">{emoji}</CopyButton>
 );
 
-const ItemRenderer = ({ style, size, ...props}) => {
+const ItemRenderer: FC<ItemProps> = (props) => {
   const item = getItem(props);
   return (
-    <li style={style}>{item && <EmojiButton emoji={item} size={size} className="" />}</li>
+    <li style={props.style}>{item && <EmojiButton emoji={item} size={props.size} />}</li>
   );
 }
 
 const App = () => {
   const timeout = useTimeout(500);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
   const [query, setQuery] = useState(getQueryFromParam() || "");
   const columnCount = Math.floor(width / SIZE) || 1;
@@ -75,10 +89,10 @@ const App = () => {
   const rowCount = Math.ceil(emojis.length / columnCount);
   const height = SIZE * rowCount;
 
-  const updateQuery = (query) => {
+  const updateQuery = (query: string): void => {
     setQuery(query);
     timeout(() => {
-      const emojis = filterEmojis(query, columnCount);
+      const emojis = filterEmojis(query);
       setEmojis(emojis)
       if (emojis) {
         setQueryInUrlParam(query);
@@ -88,11 +102,15 @@ const App = () => {
 
   useLayoutEffect(() => {
     const controller = new AbortController();
-    setWidth(ref.current.getBoundingClientRect().width);
-    setEmojis(filterEmojis(query, columnCount));
+    if (ref.current) {
+      setWidth(ref.current.getBoundingClientRect().width);
+    }
+    setEmojis(filterEmojis(query));
 
     window.addEventListener("resize", () => {
-      setWidth(ref.current.getBoundingClientRect().width);
+      if (ref.current) {
+        setWidth(ref.current.getBoundingClientRect().width);
+      }
     }, { signal: controller.signal });
 
     return () => {
@@ -113,8 +131,12 @@ const App = () => {
           onChange={e => updateQuery(e.target.value)}
         />
       </div>
+      {/* @ts-expect-error */}
       <FixedSizeGrid itemData={emojis} itemKey={itemKey} width={columnWidth * columnCount} height={height} columnCount={columnCount} columnWidth={columnWidth} rowCount={rowCount} rowHeight={SIZE} innerElementType="ul" className="mx-auto">
-        {props => <ItemRenderer columnCount={columnCount} size={SIZE} {...props} />}
+        {props =>
+          // @ts-expect-error
+          <ItemRenderer columnCount={columnCount} size={SIZE} {...props} />
+        }
       </FixedSizeGrid>
     </AppContainer>
   );
