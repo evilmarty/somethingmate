@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup 🔧
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
       - name: Clean Install 🧹
         run: |
           npm i --workspace @somethingmate/${{matrix.package}}
@@ -50,7 +50,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup 🔧
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
       - name: Clean Install 🧹
         run: |
           npm i --workspace @somethingmate/${{matrix.package}}
