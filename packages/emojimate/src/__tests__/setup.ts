@@ -22,3 +22,31 @@ Object.defineProperty(globalThis, "history", {
   },
 });
 
+class ResizeObserver {
+  private callback: ResizeObserverCallback;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+
+  observe(target: Element) {
+    this.callback(
+      [
+        {
+          target,
+          contentRect: { height: 500, width: 500 } as DOMRectReadOnly,
+          borderBoxSize: [{ blockSize: 500, inlineSize: 500 }],
+          contentBoxSize: [{ blockSize: 500, inlineSize: 500 }],
+          devicePixelContentBoxSize: [{ blockSize: 500, inlineSize: 500 }],
+        },
+      ],
+      this
+    );
+  }
+
+  unobserve() {}
+  disconnect() {}
+}
+
+Object.defineProperty(globalThis, "ResizeObserver", { value: ResizeObserver });
+
