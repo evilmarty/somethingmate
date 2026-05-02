@@ -26,10 +26,11 @@ jobs:
           persist-credentials: false
       - name: Setup 🔧
         uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
       - name: Clean Install 🧹
-        run: |
-          npm i --workspace @somethingmate/${{matrix.package}}
-          npm ci --workspace @somethingmate/${{matrix.package}}
+        run: npm ci
       - name: Build 🚧
         run: npm run build --workspace @somethingmate/${{matrix.package}}
 
@@ -51,9 +52,10 @@ jobs:
           persist-credentials: false
       - name: Setup 🔧
         uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
       - name: Clean Install 🧹
-        run: |
-          npm i --workspace @somethingmate/${{matrix.package}}
-          npm ci --workspace @somethingmate/${{matrix.package}}
+        run: npm ci
       - name: Test 🚦
         run: npm test --workspace @somethingmate/${{matrix.package}}
