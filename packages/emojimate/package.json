@@ -35,7 +35,7 @@
     "@vitest/coverage-v8": "^4.1.5",
     "@vitest/ui": "^4.1.8",
     "daisyui": "^5.5.20",
-    "emojilib": "^4.0.2",
+    "emojilib": "^4.0.3",
     "eslint": "^10.1.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
